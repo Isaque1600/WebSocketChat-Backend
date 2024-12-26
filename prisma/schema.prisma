@@ -1,0 +1,61 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id             String         @id @default(uuid())
+    username       String
+    password       String
+    userId         String?
+    createdAt      DateTime       @default(now())
+    updatedAt      DateTime       @updatedAt
+    friendRequests Friend[]       @relation("UserWhoIsSending")
+    friendAccepts  Friend[]       @relation("UserWhoIsReceiving")
+    conversations  Conversation[] @relation("UsersInConversation")
+    messages       Message[]      @relation("UserMessage")
+
+    @@map("users")
+}
+
+model Friend {
+    id     String           @id @default(uuid())
+    from   User             @relation("UserWhoIsSending", fields: [fromId], references: [id])
+    fromId String
+    to     User             @relation("UserWhoIsReceiving", fields: [toId], references: [id])
+    toId   String
+    status FriendshipStatus @default(PENDING)
+
+    @@map("friendships")
+}
+
+model Conversation {
+    id           String    @id @default(uuid())
+    isGroup      Boolean   @default(false)
+    name         String
+    participants User[]    @relation("UsersInConversation")
+    messages     Message[] @relation("MessagesInConversation")
+    createdAt    DateTime  @default(now())
+    updatedAt    DateTime  @updatedAt
+}
+
+model Message {
+    id             String       @id @default(uuid())
+    text           String
+    user           User         @relation("UserMessage", fields: [userId], references: [id])
+    userId         String
+    Conversation   Conversation @relation("MessagesInConversation", fields: [conversationId], references: [id])
+    conversationId String
+    createdAt      DateTime     @default(now())
+    updatedAt      DateTime     @updatedAt
+}
+
+enum FriendshipStatus {
+    PENDING
+    ACCEPTED
+    REJECTED
+}

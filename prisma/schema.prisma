@@ -41,6 +41,8 @@ model Conversation {
     messages     Message[] @relation("MessagesInConversation")
     createdAt    DateTime  @default(now())
     updatedAt    DateTime  @updatedAt
+
+    @@map("conversations")
 }
 
 model Message {
@@ -52,6 +54,8 @@ model Message {
     conversationId String
     createdAt      DateTime     @default(now())
     updatedAt      DateTime     @updatedAt
+
+    @@map("messages")
 }
 
 enum FriendshipStatus {

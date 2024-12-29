@@ -63,3 +63,13 @@ enum FriendshipStatus {
     ACCEPTED
     REJECTED
 }
+
+model BlackListTokens {
+    id             String   @id @default(uuid())
+    tokens         String   @unique
+    expirationDate DateTime @map("expiration_date")
+    created_at     DateTime @default(now())
+    updated_ad     DateTime @updatedAt
+
+    @@map("black_list_tokens")
+}

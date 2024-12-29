@@ -1,5 +1,5 @@
 import { IsNotEmpty, MaxLength, MinLength } from 'class-validator';
-import { Password } from 'src/auth/value-objects/password';
+import { Password } from 'src/value-objects/password';
 
 export class CreateUserDto {
   @IsNotEmpty()

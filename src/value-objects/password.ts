@@ -1,16 +1,18 @@
 import * as bcrypt from 'bcrypt';
 
 export class Password {
+  private value: Promise<string>;
+
   async toValue() {
-    return await Password.hashValue(this.value);
+    return await this.value;
   }
 
   async toString() {
-    return await Password.hashValue(this.value);
+    return await this.value;
   }
 
-  constructor(private value: string) {
-    this.value = this.value.trim();
+  constructor(value: string) {
+    this.value = Password.hashValue(value);
   }
 
   static async hashValue(value: string): Promise<string> {

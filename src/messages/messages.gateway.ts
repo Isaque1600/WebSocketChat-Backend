@@ -1,23 +1,23 @@
 import {
-  ConnectedSocket,
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
 } from '@nestjs/websockets';
-import { Socket } from 'socket.io';
 
 @WebSocketGateway({
   cors: {
     origin: '*',
   },
+  namespace: 'messages',
 })
 export class MessagesGateway {
-  @SubscribeMessage('message')
-  handleMessage(
-    @ConnectedSocket() client: Socket,
-    @MessageBody() payload: string,
-  ): string {
-    console.log(payload);
-    return 'Hello from server!';
+  @SubscribeMessage('conversations')
+  handleMessage(@MessageBody('message') payload: string): string {
+    return 'hello client';
+  }
+
+  @SubscribeMessage('identity')
+  async identity(@MessageBody() data: number): Promise<number> {
+    return data;
   }
 }

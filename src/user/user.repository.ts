@@ -160,4 +160,21 @@ export class UserRepository {
       },
     });
   }
+
+  public async rejectFriend(
+    friendRequestId: string,
+    userId: string,
+    friendId: string,
+  ) {
+    return await this.prisma.friend.update({
+      where: {
+        id: friendRequestId,
+        fromId: friendId,
+        toId: userId,
+      },
+      data: {
+        status: FriendshipStatus.REJECTED,
+      },
+    });
+  }
 }

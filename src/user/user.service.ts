@@ -49,4 +49,16 @@ export class UserService {
       friendId,
     );
   }
+
+  async rejectFriendship(
+    friendRequestId: string,
+    userId: string,
+    friendId: string,
+  ) {
+    return await this.userRepository.rejectFriend(
+      friendRequestId,
+      userId,
+      friendId,
+    );
+  }
 }

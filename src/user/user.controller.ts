@@ -61,4 +61,18 @@ export class UserController {
       data.friendId,
     );
   }
+
+  @Post('friend/reject')
+  @UseGuards(AuthGuard)
+  @UsePipes(new ValidationPipe())
+  async reject(
+    @Req() req: Request & { user: { sub: string } },
+    @Body() data: AcceptFriendDTO,
+  ) {
+    return await this.userService.rejectFriendship(
+      data.friendRequestId,
+      req.user.sub,
+      data.friendId,
+    );
+  }
 }

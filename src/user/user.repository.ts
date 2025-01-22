@@ -177,4 +177,25 @@ export class UserRepository {
       },
     });
   }
+
+  public async remove(id: string) {
+    try {
+      const friendDelete = await this.prisma.friend.delete({
+        where: {
+          id,
+        },
+      });
+
+      return friendDelete;
+    } catch (error) {
+      console.log(error);
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code == 'P2025') {
+          throw new BadRequestException('FriendShip not found');
+        } else {
+          throw new BadRequestException(error.message);
+        }
+      }
+    }
+  }
 }

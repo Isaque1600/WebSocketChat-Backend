@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   Post,
   Req,
@@ -74,5 +75,16 @@ export class UserController {
       req.user.sub,
       data.friendId,
     );
+  }
+
+  @Delete('friend/remove')
+  @UseGuards(AuthGuard)
+  @UsePipes(new ValidationPipe())
+  async remove(@Body('friendShipId') friendShipId: string) {
+    if (!friendShipId) {
+      throw new BadRequestException('FriendShip Id missing');
+    }
+
+    return await this.userService.remove(friendShipId);
   }
 }

@@ -61,4 +61,8 @@ export class UserService {
       friendId,
     );
   }
+
+  async remove(id: string) {
+    return await this.userRepository.remove(id);
+  }
 }

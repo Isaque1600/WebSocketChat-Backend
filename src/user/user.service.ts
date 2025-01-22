@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateUserDto } from 'src/dtos/user.dto';
 import { UserRepository } from './user.repository';
 
@@ -16,6 +16,10 @@ export class UserService {
 
   async friends(id: string) {
     const friends = await this.userRepository.friends(id);
+
+    if (!friends) {
+      throw new InternalServerErrorException('Friends not found');
+    }
 
     const friendsSent = Array.from(friends.friendSent, (friend) => ({
       id: friend.id,

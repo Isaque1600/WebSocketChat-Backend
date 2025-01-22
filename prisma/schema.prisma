@@ -14,8 +14,8 @@ model User {
     userId         String?
     createdAt      DateTime       @default(now())
     updatedAt      DateTime       @updatedAt
-    friendReceived Friend[]       @relation("UserWhoIsSending")
-    friendSent     Friend[]       @relation("UserWhoIsReceiving")
+    friendSent     Friend[]       @relation("UserWhoIsSending")
+    friendReceived Friend[]       @relation("UserWhoIsReceiving")
     conversations  Conversation[] @relation("UsersInConversation")
     messages       Message[]      @relation("UserMessage")
 

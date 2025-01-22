@@ -29,26 +29,15 @@ export class UserRepository {
   }
 
   public async friends(id: string) {
-    return await this.prisma.user.findUnique({
+    return await this.prisma.user.findFirst({
       where: {
         id,
-        OR: [
-          {
-            friendSent: {
-              some: {
-                status: 'ACCEPTED',
-              },
-            },
-            friendReceived: {
-              some: {
-                status: 'ACCEPTED',
-              },
-            },
-          },
-        ],
       },
       select: {
         friendSent: {
+          where: {
+            status: FriendshipStatus.ACCEPTED,
+          },
           select: {
             id: true,
             to: {
@@ -59,6 +48,9 @@ export class UserRepository {
           },
         },
         friendReceived: {
+          where: {
+            status: FriendshipStatus.ACCEPTED,
+          },
           select: {
             id: true,
             from: {

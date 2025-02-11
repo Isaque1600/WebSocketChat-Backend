@@ -28,6 +28,14 @@ export class UserRepository {
     });
   }
 
+  public async findById(id: string) {
+    return await this.prisma.user.findFirst({
+      where: {
+        id,
+      },
+    });
+  }
+
   public async friends(id: string) {
     return await this.prisma.user.findFirst({
       where: {
@@ -110,8 +118,6 @@ export class UserRepository {
           },
         },
       });
-
-      console.log(canMakeRequest);
 
       if (canMakeRequest) {
         throw new BadRequestException(

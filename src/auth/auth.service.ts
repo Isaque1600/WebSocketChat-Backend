@@ -20,7 +20,11 @@ export class AuthService {
   ) {}
 
   async register(data: CreateUserDto) {
-    return await this.userService.create(data);
+    const user = await this.userService.create(data);
+
+    delete user.password;
+
+    return user;
   }
 
   async login(data: CreateUserDto) {

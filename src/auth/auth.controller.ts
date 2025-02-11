@@ -12,7 +12,9 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { Request } from 'express';
 import { CreateUserDto } from 'src/dtos/user.dto';
+import { User } from 'src/user/user.interface';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 
@@ -65,14 +67,17 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Get('me')
   @HttpCode(HttpStatus.OK)
-  async me(@Req() req) {
+  async me(@Req() req: Request & { user: User }) {
     return await this.authService.me(req.user.username);
   }
 
   @UseGuards(AuthGuard)
   @Post('logout')
   @HttpCode(HttpStatus.OK)
-  async logout(@Req() req, @Body('refreshToken') refreshToken: string) {
+  async logout(
+    @Req() req: Request & { user: User },
+    @Body('refreshToken') refreshToken: string,
+  ) {
     await this.authService.logout(req.user.accessToken, refreshToken);
   }
 }
